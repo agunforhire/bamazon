@@ -3,13 +3,12 @@ let inquirer = require('inquirer');
 let Table = require('easy-table');
 let chalk = require('chalk');
 let keys = require('./keys');
-let sqlpass = keys.SQLpw;
-
+console.log(keys);
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: sqlpass,
+    password: keys,
     database: "bamazon"
 });
 let troveArray = [];
