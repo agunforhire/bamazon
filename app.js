@@ -13,8 +13,6 @@ const connection = mysql.createConnection({
 });
 let troveArray = [];
 
-displayLoot();
-
 function connectToDB() {
     connection.connect(function(err) {
         if (err) throw err;
@@ -24,12 +22,13 @@ function connectToDB() {
 
 function disconnectFromDB() {
 	connection.end();
-	console.log('Goodbye!');
+	console.log('Fare thee well!');
 }
+
 
 function displayLoot() {
 	connectToDB();
-	console.log(chalk.yellow.bgBlue('*.*.*.* Welcome to Gilmore\'s Glorious Goods! *.*.*.*'));
+	console.log(chalk.yellowBright.bgCyan.bold('*.*.*.* Welcome to Gilmore\'s Glorious Goods! *.*.*.*'));
     connection.query('SELECT * FROM trove', function(err, res, fields) {  
         if (err) throw err;
 		else if (res.length > 0) {
@@ -37,11 +36,11 @@ function displayLoot() {
 			console.log('got items...');
 			var lootTable = new Table;
 			troveArray.forEach( (product) => {
-				lootTable.cell(chalk.blue.bgYellow('Id'), product.id, Table.number(0));
-                lootTable.cell(chalk.blue.bgYellow('Description'), chalk.inverse(product.product_name));
-                lootTable.cell(chalk.blue.bgYellow('Department'), chalk.bgBlackBright(product.department_name));
-                lootTable.cell(chalk.blue.bgYellow('Price - in Gold'), product.price, Table.number(3));
-                lootTable.cell(chalk.blue.bgYellow('Stock'), product.stock_ea, Table.number(4));
+				lootTable.cell(chalk.cyanBright.bgYellow('Id'), product.id, Table.number(0));
+                lootTable.cell(chalk.cyanBright.bgYellow('Description'), chalk.inverse(product.product_name));
+                lootTable.cell(chalk.cyanBright.bgYellow('Department'), chalk.bgBlackBright(product.department_name));
+                lootTable.cell(chalk.cyanBright.bgYellow('Price - in Gold'), product.price, Table.number(3));
+                lootTable.cell(chalk.cyanBright.bgYellow('Stock'), product.stock_ea, Table.number(4));
 				lootTable.newRow();
 			});
 			console.log(lootTable.toString());
@@ -57,7 +56,7 @@ function buyProduct() {
 	inquirer.prompt([{
 		name: 'id',
 		type: 'input',
-		message: 'Which product would you like to buy?',
+		message: chalk.yellow.bgCyan('Please enter the ID of the item you\'d like to procure'),
 		validate: (itemId) => {
 			return (!isNaN(itemId) && itemId > 0 && itemId <= troveArray.length);
 		}
@@ -69,14 +68,14 @@ function buyProduct() {
 		inquirer.prompt([{
 			name: 'quantity',
 			type: 'input',
-			message: 'How many would you like to buy',
+			message: chalk.cyan.bgYellow('How many would you like? - Available Sotck:', troveArray[purchase.id -1].stock_ea),
 			validate: (quantity) => {
 				return (!isNaN(quantity) && quantity > 0 && quantity <= maxQuantity);
 			}
 		}]).then( (purchase) => {
 			const salesTotal = parseInt(purchase.quantity) * price;
 			quantity = purchase.quantity;
-			console.log(`Ok, purchasing ${quantity} of ${itemToPurchase} for $ ${salesTotal}.`);
+			console.log(`Ok, buying ${quantity} of ${itemToPurchase} for ${salesTotal}.`);
 			purchaseItem(idToPurchase, quantity);
 		});
 	});
@@ -87,8 +86,11 @@ function purchaseItem(productId, purchaseQuantity) {
 		"UPDATE trove SET ? WHERE ?",
 		[{ stock_ea: purchaseQuantity }, { id: productId }],
 		function(err, res) {
-			console.log(res.affectedRows + " products updated!\n");
+			console.log(res.affectedRows + " items updated!\n");
 		});
 	console.log(query.sql);
 	disconnectFromDB();
 }
+
+
+displayLoot();
