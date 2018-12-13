@@ -22,14 +22,14 @@ function connectToDB() {
     });
 }
 
-function disconnectDB() {
+function disconnectFromDB() {
 	connection.end();
 	console.log('Goodbye!');
 }
 
 function displayLoot() {
 	connectToDB();
-	console.log('*.*.* Welcome to Gilmore\'s Glorious Goods! *.*.*');
+	console.log('*.*.*.* Welcome to Gilmore\'s Glorious Goods! *.*.*.*');
     connection.query('SELECT * FROM trove', function(err, res, fields) {  
         if (err) throw err;
 		else if (res.length > 0) {
@@ -45,14 +45,14 @@ function displayLoot() {
 				lootTable.newRow();
 			});
 			console.log(lootTable.toString());
-			promptToBuyProduct();
+			buyProduct();
 		}
         else console.log('Sold out of all items! Please come back soon.');
 	});
 	
 }
 
-function promptToBuyProduct() {
+function buyProduct() {
 	let idToPurchase, itemToPurchase, maxQuantity, price, quantity;
 	inquirer.prompt([{
 		name: 'id',
