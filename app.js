@@ -90,5 +90,5 @@ function purchaseItem(productId, purchaseQuantity) {
 			console.log(res.affectedRows + " products updated!\n");
 		});
 	console.log(query.sql);
-	disconnectDB();
+	disconnectFromDB();
 }
