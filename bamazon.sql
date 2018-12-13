@@ -13,7 +13,7 @@ CREATE TABLE trove (
 
 INSERT INTO trove (product_name,department_name,price,stock_ea)
 VALUES ("Vorpal Blade","Weapons",999.99,3),
-       ("Ars Geotia: First Edition","Books", 1499.99,10),
+       ("Ars Goetia: First Edition","Books", 1499.99,10),
        ("A hut on hens legs", "Transportation", 4999.99, 2),
        ("Bootleg Ice Cream", "Food & Drink", 99.99, 199),
        ("Abandoned Clown Shoe", "Clothing", 24.99, 99),

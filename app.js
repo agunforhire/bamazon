@@ -29,25 +29,25 @@ function disconnectFromDB() {
 
 function displayLoot() {
 	connectToDB();
-	console.log('*.*.*.* Welcome to Gilmore\'s Glorious Goods! *.*.*.*');
+	console.log(chalk.yellow.bgBlue('*.*.*.* Welcome to Gilmore\'s Glorious Goods! *.*.*.*'));
     connection.query('SELECT * FROM trove', function(err, res, fields) {  
         if (err) throw err;
 		else if (res.length > 0) {
 			res.forEach((loot) => troveArray.push(loot) );
-			console.log('got products...');
+			console.log('got items...');
 			var lootTable = new Table;
 			troveArray.forEach( (product) => {
-				lootTable.cell('Id', product.id, Table.number(0));
-                lootTable.cell('Description', product.product_name);
-                lootTable.cell('Department', product.department_name);
-                lootTable.cell('Price - in Gold', product.price, Table.number(3));
-                lootTable.cell('Stock', product.stock_ea, Table.number(4));
+				lootTable.cell(chalk.blue.bgYellow('Id'), product.id, Table.number(0));
+                lootTable.cell(chalk.blue.bgYellow('Description'), chalk.inverse(product.product_name));
+                lootTable.cell(chalk.blue.bgYellow('Department'), chalk.bgBlackBright(product.department_name));
+                lootTable.cell(chalk.blue.bgYellow('Price - in Gold'), product.price, Table.number(3));
+                lootTable.cell(chalk.blue.bgYellow('Stock'), product.stock_ea, Table.number(4));
 				lootTable.newRow();
 			});
 			console.log(lootTable.toString());
 			buyProduct();
 		}
-        else console.log('Sold out of all items! Please come back soon.');
+        else console.log('Oh no!  We\'ve been cleaned out!  Come back again soon.');
 	});
 	
 }
